@@ -35,7 +35,7 @@ function Create() {
            htmlFor="name"
             className="block text-sm font-medium text-gray-200 mb-2"
           >
-            Name
+            Enter Your Name
           </label>
           <input
             type="text"
