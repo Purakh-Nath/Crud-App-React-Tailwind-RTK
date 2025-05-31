@@ -1,315 +1,244 @@
-// import React, { useEffect, useState } from "react";
-// import { createUser, showUser } from "../features/userDetailsSlice";
-// import { useDispatch, useSelector } from "react-redux";
-// import { Link } from "react-router-dom";
+"use client"
 
+import { useEffect, useState } from "react"
+import { showUser, deleteUser } from "../features/userDetailsSlice" // Assuming this path is correct
+import { useDispatch, useSelector } from "react-redux"
+import { Link } from "react-router-dom"
+import ViewModal from "./ViewModal"
+import { MoreVertical, Eye, Edit3, Trash2, Users, XCircle } from "lucide-react"
+import { useMobile } from "../hooks/use-mobile"
 
-// function Read() {
-//     const [isOpen, setIsOpen] = useState(false);
-    
-//     const handleDropdownClick = () => {
-
-//       setIsOpen(!isOpen);
-//     };
-//   const dispatch = useDispatch();
-//   const { users, loading } = useSelector((state) => state.app);
-// //   console.log(allData);
-//   useEffect(() => {
-//     dispatch(showUser());
-//   }, [createUser]);
-
-//   if (loading) {
-//     return <button disabled type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 inline-flex items-center mt-5">
-//     <svg aria-hidden="true" role="status" class="inline w-4 h-4 me-3 text-white animate-spin" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
-//     <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="#E5E7EB"/>
-//     <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="currentColor"/>
-//     </svg>
-//     Loading...
-//     </button>;
-//   }
-
-//   return (
-   
-//     <div class="grid grid-cols-4 md:grid-cols-3 sm:grid-cols-1 grid-rows-auto gap-4">
- 
-
-//      {users && users.map((user) => (<div class="w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 mt-5">
-//     <div className="flex justify-end px-4 pt-4">
-//         <button
-//           id="dropdownButton"
-//           onClick={() => handleDropdownClick()}
-//           data-dropdown-toggle="dropdown"
-//           className="inline-block text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:ring-4 focus:outline-none focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-1.5"
-//           type="button"
-//         >
-//           <span className="sr-only">Open dropdown</span>
-//           <svg
-//             className="w-5 h-5"
-//             aria-hidden="true"
-//             xmlns="http://www.w3.org/2000/svg"
-//             fill="currentColor"
-//             viewBox="0 0 16 3"
-//           >
-//             <path d="M2 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Zm6.041 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM14 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Z" />
-//           </svg>
-//         </button>
-//         {/* <!-- Dropdown menu --> */}
-
-//         <div   
-//           id="dropdown"
-//           className={` ${isOpen ? 'block' : 'hidden'} z-10 text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700`}
-//         >
-//           <ul class="py-2" aria-labelledby="dropdownButton">
-//             <li>
-//               <Link
-//                to={''}
-//                 className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
-//               >
-//                 Edit
-//               </Link>
-//             </li>
-//             <li>
-//               <Link
-//                 to={''}
-//                 className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
-//               >
-//                 Export Data
-//               </Link>
-//             </li>
-//             <li>
-//               <Link
-//                 to={''}
-//                 className="block px-4 py-2 text-sm text-red-600 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
-//               >
-//                 Delete
-//               </Link>
-//             </li>
-//           </ul>
-//         </div>
-//       </div>  
-
-      
-
-//     <div key='' className="flex flex-col items-center pb-10">
-//       <img
-//         className="w-24 h-24 mb-3 rounded-full shadow-lg"
-//         src="https://picsum.photos/200/300/?blur=2"
-//         alt={`Profile picture of ${user.name}`}
-//       />
-//       <h5 className="mb-1 text-xl font-medium text-gray-900 dark:text-white">
-//         {user.name}
-//       </h5>
-//       <span className="text-sm text-gray-500 dark:text-gray-400">
-//       {user.email}
-//       </span>
-//       <div className="flex mt-4 md:mt-6">
-//         <Link
-//           to={''}
-//           className="inline-flex items-center px-4 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-//         >
-//            {user.gender}
-//         </Link>
-//         <Link
-//          to={''}
-//           className="inline-flex items-center px-4 py-2 text-sm font-medium text-center text-gray-900 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-700 dark:focus:ring-gray-700 ms-3"
-//         >
-//           {user.age}
-//         </Link>
-//       </div>
-//     </div>
- 
-//     </div>  ))}
-//     </div>
-//   );
-// }
-
-// export default Read;
-
-
-
-
-import React, { useEffect, useState } from "react";
-import { createUser, showUser ,deleteUser, searchData } from "../features/userDetailsSlice";
-import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
-import ViewModal from "./ViewModal";
-
-
-
+const MODAL_WIDTH_APPROX = 288 // Approx. width of ViewModal (w-72 = 18rem * 16px/rem)
+const MODAL_GAP = 8 // 8px gap
 
 function Read() {
-    const [id, setId] = useState();
-    const [isHovered, setIsHovered] = useState(false);
-    const[genderChecked, setGenderChecked] = useState('')
-    
+  const [modalTargetId, setModalTargetId] = useState(null)
+  const [isViewModalOpen, setIsViewModalOpen] = useState(false) // Changed from isViewLinkHovered
+  const [genderChecked, setGenderChecked] = useState("")
+  const [activeIndex, setActiveIndex] = useState(-1)
+  const [modalPositionStyle, setModalPositionStyle] = useState({}) // For desktop popover style
 
-    const [activeIndex, setActiveIndex] = useState(-1); // Track active div index
+  const isMobile = useMobile() // Hook to detect mobile state
+  const dispatch = useDispatch()
+  const { users, loading, searchData } = useSelector((state) => state.app)
+
+  useEffect(() => {
+    dispatch(showUser())
+  }, [dispatch])
 
   const handleDropdownClick = (index) => {
-    setActiveIndex(index === activeIndex ? -1 : index); // Toggle visibility
-  };
-
-  const dispatch = useDispatch();
-  const { users, loading,searchData } = useSelector((state) => state.app);
-//   console.log(allData);
-  useEffect(() => {
-    dispatch(showUser());
-  }, [createUser]);
-
-  // setTimeout(() => {
-
-  // }, 2000);
-
-  if (loading) {
-    return <button disabled type="button" className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 inline-flex items-center mt-5">
-    <svg aria-hidden="true" role="status" className="inline w-4 h-4 me-3 text-white animate-spin" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="#E5E7EB"/>
-    <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="currentColor"/>
-    </svg>
-    Loading...
-    </button>; 
+    const newActiveIndex = index === activeIndex ? -1 : index
+    setActiveIndex(newActiveIndex)
+    if (newActiveIndex === -1 || newActiveIndex !== activeIndex) {
+      setIsViewModalOpen(false) // Close modal if dropdown closes or changes
+    }
   }
-  return (
-<>
-  <div className="flex gap-1 justify-center">
-  <div className="flex items-center mt-4  justify-center">
-    <input 
-     onChange={(e)=>{setGenderChecked(e.target.value)}}
-    defaultChecked id="default-radio-1" type="radio"  name="gender" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"></input>
-    <label htmlFor="default-radio-1" className="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">All Profiles</label>
-</div>
- <div className="flex items-center mt-4 justify-center">
-    <input 
-    onChange={(e)=>{setGenderChecked(e.target.value)}}
 
-    checked={genderChecked==='Male'}  id="default-radio-1" type="radio" value="Male" name="gender" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"></input>
-    <label htmlFor="default-radio-1" className="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Male</label>
-</div>
- <div className="flex items-center  mt-4 justify-center">
-    <input 
-    onChange={(e)=>{setGenderChecked(e.target.value)}}
-    checked={genderChecked==='Female'}  id="default-radio-1" type="radio" value="Female" name="gender" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"></input>
-    <label htmlFor="default-radio-1" className="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Female</label>
-</div>
-</div>
-    
-    <div className="grid grid-cols-1 md:grid-cols-3 sm:grid-cols-2 grid-rows-auto gap-4">
-     {users &&
-     users.filter((ele) => {
-      if(searchData.length===0){
+  const openViewModal = (userId, event) => {
+    setModalTargetId(userId)
+    setIsViewModalOpen(true)
+
+    if (!isMobile && event) {
+      // Only calculate popover position for desktop
+      const cardElement = event.currentTarget.closest(".user-card-wrapper")
+      if (cardElement) {
+        const cardRect = cardElement.getBoundingClientRect()
+        const spaceOnLeft = cardRect.left
+        const spaceOnRight = window.innerWidth - cardRect.right
+        let positionClass = ""
+
+        if (spaceOnLeft >= MODAL_WIDTH_APPROX + MODAL_GAP) {
+          positionClass = "right-[calc(100%_+_8px)]" // Position left of card
+        } else if (spaceOnRight >= MODAL_WIDTH_APPROX + MODAL_GAP) {
+          positionClass = "left-[calc(100%_+_8px)]" // Position right of card
+        } else {
+          positionClass = spaceOnRight > spaceOnLeft ? "left-[calc(100%_+_8px)]" : "right-[calc(100%_+_8px)]"
+        }
+        setModalPositionStyle({ positionClass: positionClass, topClass: "top-4" })
+      }
+    } else {
+      setModalPositionStyle({}) // Reset for mobile or if event is missing
+    }
+  }
+
+  const closeViewModal = () => {
+    setIsViewModalOpen(false)
+  }
+
+  const filteredUsers = users
+    .filter((ele) => {
+      if (searchData.length === 0) {
         return ele
-      }else{
+      } else {
         return ele.name.toLowerCase().includes(searchData.toLowerCase())
       }
-     }).filter((ele)=>{
-      if(genderChecked==='Male'){
+    })
+    .filter((ele) => {
+      if (genderChecked === "Male" || genderChecked === "Female") {
         return ele.gender === genderChecked
-      }else if(genderChecked==='Female'){
-        return ele.gender === genderChecked
-      }else{
-        return ele;
+      } else {
+        return ele
       }
-     })
-      .map((user,index) => (<div  key={user.id} className="w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 mt-5">
-            <button
-          id="dropdownButton"
-          onClick={() => handleDropdownClick(index)}
-          data-dropdown-toggle="dropdown"
-          // inline-block
-          className="flex  text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:ring-4 focus:outline-none focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-1.5"
-          type="button"
+    })
+
+  if (loading) {
+    return (
+      <div className="flex flex-col justify-center items-center min-h-[calc(100vh-150px)] bg-gray-100 dark:bg-gray-900 p-4">
+        <svg
+          className="animate-spin h-12 w-12 text-purple-600 mb-4"
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
         >
-          <span className="sr-only">Open dropdown</span>
-          <svg
-            className="w-5 h-5"
-            aria-hidden="true"
-            xmlns="http://www.w3.org/2000/svg"
+          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+          <path
+            className="opacity-75"
             fill="currentColor"
-            viewBox="0 0 16 3"
-          >
-            <path d="M2 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Zm6.041 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM14 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Z" />
-          </svg>
-        </button>
-        {/* <!-- Dropdown menu --> */}
-        {/* ${isOpen ? 'block' : 'hidden'} */}
+            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+          ></path>
+        </svg>
+        <p className="text-xl font-semibold text-gray-700 dark:text-gray-200">Loading Users...</p>
+        <p className="text-sm text-gray-500 dark:text-gray-400">Please wait a moment.</p>
+      </div>
+    )
+  }
 
-
-
-        <div   key={user.id}
-          id="dropdown"
-          className={`  ${index === activeIndex ? "block" : "hidden"} absolute z-10 text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700`}
-        >
-          <ul className="py-2" aria-labelledby="dropdownButton">
-            <li>
-              <Link 
-              key={user.id}
-               to={''}
-                className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
-                onMouseEnter={() => {setIsHovered(true);setId(user.id);}}
-                onMouseLeave={() => setIsHovered(false)}
-                
-               
-              >
-                View
-              </Link>
-              {isHovered && <ViewModal id={id} />}
-            </li>
-            <li>
-              <Link
-                to={`/edit/${user.id}`}
-                className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
-              >
-                Edit
-              </Link>
-            </li>
-            <li>
-              <Link
-              onClick={()=> dispatch(deleteUser(user.id))}
-                to={''}
-                className="block px-4 py-2 text-sm text-red-600 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
-              >
-                Delete
-              </Link>
-            </li>
-          </ul>
-        </div>
-        
-<div key='' className="flex flex-col items-center pb-10">
-<img
-  className="w-24 h-24 mb-3 rounded-full shadow-lg"
-  src="https://picsum.photos/200/300/?blur=2"
-  alt={`Profile picture of ${user.name}`}
-/>
-<h5 className="mb-1 text-xl font-medium text-gray-900 dark:text-white">
-  {user.name}
-</h5>
-<span className="text-sm text-gray-500 dark:text-gray-400">
-{user.email}
-</span>
-<div className="flex mt-4 md:mt-6">
-  <Link
-    to={''}
-    className="inline-flex items-center px-4 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-  >
-     {user.gender}
-  </Link>
-  <Link
-   to={''}
-    className="inline-flex items-center px-4 py-2 text-sm font-medium text-center text-gray-900 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-700 dark:focus:ring-gray-700 ms-3"
-  >
-    {user.age}
-  </Link>
-</div>
-</div>
+  return (
+    <div className="min-h-screen bg-gray-100 dark:bg-gray-900 py-8 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto">
+        <fieldset className="mb-8 p-4 sm:p-6 bg-white dark:bg-gray-800 shadow-xl rounded-xl">
+          <legend className="text-xl font-semibold text-gray-800 dark:text-white px-3 py-1 rounded-md bg-gray-100 dark:bg-gray-700 flex items-center">
+            <Users size={20} className="mr-2 text-purple-600 dark:text-purple-400" />
+            Filter by Gender
+          </legend>
+          <div className="flex flex-wrap gap-x-6 gap-y-4 justify-center mt-4">
+            {["All Profiles", "Male", "Female"].map((genderOption) => {
+              const value = genderOption === "All Profiles" ? "" : genderOption
+              return (
+                <div key={genderOption} className="flex items-center">
+                  <input
+                    id={`radio-${genderOption.toLowerCase().replace(" ", "-")}`}
+                    type="radio"
+                    value={value}
+                    name="gender"
+                    checked={genderChecked === value}
+                    onChange={(e) => setGenderChecked(e.target.value)}
+                    className="w-5 h-5 text-purple-600 bg-gray-100 border-gray-300 focus:ring-purple-500 dark:focus:ring-purple-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cursor-pointer"
+                  />
+                  <label
+                    htmlFor={`radio-${genderOption.toLowerCase().replace(" ", "-")}`}
+                    className="ml-2 text-sm font-medium text-gray-700 dark:text-gray-200 cursor-pointer"
+                  >
+                    {genderOption}
+                  </label>
+                </div>
+              )
+            })}
           </div>
-          
-   
-        ))}
-        
-    </div>
+        </fieldset>
 
-    </>
-  );
+        {filteredUsers.length === 0 && !loading && (
+          <div className="text-center py-12">
+            <XCircle size={48} className="mx-auto text-gray-400 dark:text-gray-500 mb-4" />
+            <h3 className="text-xl font-semibold text-gray-700 dark:text-gray-200">No Users Found</h3>
+            <p className="text-gray-500 dark:text-gray-400 mt-1">Try adjusting your search or filter criteria.</p>
+          </div>
+        )}
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          {filteredUsers.map((user, index) => (
+            <div
+              key={user.id}
+              className="user-card-wrapper relative bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl shadow-lg transition-all duration-300 hover:shadow-2xl"
+            >
+              <div className="absolute top-3 right-3 z-20">
+                <button
+                  onClick={() => handleDropdownClick(index)}
+                  className="p-2 text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-full focus:outline-none focus:ring-2 focus:ring-purple-500"
+                >
+                  <MoreVertical size={20} />
+                </button>
+                {activeIndex === index && (
+                  <div
+                    className="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-700 rounded-md shadow-xl py-1 border dark:border-gray-600 origin-top-right z-10"
+                    onMouseLeave={isMobile ? undefined : closeViewModal} // Close popover on mouse leave for desktop
+                  >
+                    <button // Changed Link to button for better semantics if it's an action
+                      onClick={(e) => openViewModal(user.id, e)}
+                      className="flex items-center w-full px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-600"
+                    >
+                      <Eye size={16} className="mr-2" /> View
+                    </button>
+                    <Link
+                      to={`/edit/${user.id}`}
+                      onMouseEnter={isMobile ? undefined : closeViewModal} // Close popover on mouse enter for desktop
+                      className="flex items-center w-full px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-600"
+                    >
+                      <Edit3 size={16} className="mr-2" /> Edit
+                    </Link>
+                    <button
+                      onClick={() => dispatch(deleteUser(user.id))}
+                      onMouseEnter={isMobile ? undefined : closeViewModal} // Close popover on mouse enter for desktop
+                      className="flex items-center w-full px-4 py-2 text-sm text-red-600 hover:bg-red-50 dark:hover:bg-red-700 dark:hover:text-red-100"
+                    >
+                      <Trash2 size={16} className="mr-2" /> Delete
+                    </button>
+                  </div>
+                )}
+              </div>
+
+              {/* Desktop Popover Modal */}
+              {!isMobile && isViewModalOpen && modalTargetId === user.id && activeIndex === index && (
+                <div
+                  className={`absolute z-30 transition-opacity duration-150 
+                    ${modalPositionStyle.positionClass || ""} 
+                    ${modalPositionStyle.topClass || "top-4"}
+                  `}
+                >
+                  <ViewModal id={modalTargetId} onClose={closeViewModal} isOverlay={false} />
+                </div>
+              )}
+
+              <div className="flex flex-col items-center p-6 pt-10 text-center">
+                <img
+                  className="w-24 h-24 mb-4 rounded-full shadow-md border-2 border-purple-300 dark:border-purple-600 object-cover"
+                  src={`https://i.pravatar.cc/150?u=${user.id}`}
+                  alt={`Profile of ${user.name}`}
+                />
+                <h5
+                  className="mb-1 text-xl font-semibold text-gray-900 dark:text-white truncate w-full"
+                  title={user.name}
+                >
+                  {user.name}
+                </h5>
+                <span className="text-sm text-gray-500 dark:text-gray-400 truncate w-full" title={user.email}>
+                  {user.email}
+                </span>
+                <div className="flex mt-5 space-x-3">
+                  <span className="inline-flex items-center px-3 py-1 text-xs font-medium text-center text-indigo-700 bg-indigo-100 rounded-full dark:bg-indigo-900 dark:text-indigo-200">
+                    {user.gender}
+                  </span>
+                  <span className="inline-flex items-center px-3 py-1 text-xs font-medium text-center text-pink-700 bg-pink-100 rounded-full dark:bg-pink-900 dark:text-pink-200">
+                    Age: {user.age}
+                  </span>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Mobile Overlay Modal */}
+        {isMobile && isViewModalOpen && modalTargetId && (
+          <div
+            className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4"
+            onClick={closeViewModal} // Close on backdrop click
+          >
+            <ViewModal id={modalTargetId} onClose={closeViewModal} isOverlay={true} />
+          </div>
+        )}
+      </div>
+    </div>
+  )
 }
 
-export default Read;
+export default Read
